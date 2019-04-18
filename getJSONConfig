@@ -1,0 +1,36 @@
+function getJSONConfig()
+{
+
+	var config = sessionStorage.getItem('gtm_config'), response;
+
+	if(config){
+
+		response = {
+			response : config
+		}
+
+		setTimeout(function(){
+			response.onload();
+		}, 100);
+
+		return response;
+
+	}
+
+
+	var requestURL 			= 'https://storage.googleapis.com/intl_static_files/gtm_variables.json?no-cache=' + getDate();
+	var request 			= new XMLHttpRequest();
+
+	request.open			('GET', requestURL);
+	request.responseType 	= 'json';
+	request.onreadystatechange = function() {
+  	  if (request.readyState != 4) return;
+
+	  sessionStorage.setItem('gtm_config', xhr.responseText);
+
+	}
+	request.send();	
+
+	return request;
+
+}
